@@ -1,51 +1,22 @@
 import './App.css';
-import Home from './Components/Home';
-import Edit from './Components/Edit';
-import Timer from './Components/Timer';
-import Books from './Components/Books';
+import Home from './components/Home';
+import store from './Store';
 import React, { PureComponent } from 'react';
+import { Provider } from 'react-redux';
+import { connect } from 'react-redux';
+import initialState from './reducers/calendarReducer';
+import combineReducers from './reducers/index';
 
 class App extends PureComponent {
-
-  state = {
-    isEdit: false,
-    isBooks: false,
-    isTimer: false,
-  };
-
-  switchToTimer = () => {
-    this.setState({ isTimer: true, isEdit: false, isBooks: false });
-  };
-
-  switchToEdit = () => {
-    this.setState({ isTimer: false, isEdit: true, isBooks: false });
-  };
-
-  switchToBooks = () => {
-    this.setState({ isTimer: false, isEdit: false, isBooks: true });
-  };
-
   render(){
     return (
-      <div className="App">
-        <Home 
-          switchToTimer={this.switchToTimer}
-          switchToEdit={this.switchToEdit}
-          switchToBooks={this.switchToBooks}
-        />
-        {(this.state.isEdit && (
-          <Edit />
-        ))}
-        {(this.state.isBooks && (
-          <Books />
-        ))}
-        {(this.state.isTimer && (
-          <Timer />
-        ))}
-      </div>
+      <Provider store={store} reducer={combineReducers} initialState={initialState}>
+        <div className="App">
+          <Home />
+        </div>
+      </Provider>
     );
   }
-    
 }
 
 export default App;
